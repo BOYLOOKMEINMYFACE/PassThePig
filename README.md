@@ -1,3 +1,3 @@
-# PassThePig
+# PassThePigs
 
 hello, it is pig
