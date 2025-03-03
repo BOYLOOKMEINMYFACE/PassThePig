@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Player{
     private String name;
     private String strategy;
@@ -10,9 +12,9 @@ public class Player{
         return true;
     }
     public String getName(){
-        
+        return "W";
     }
     public String getStrategy(){
-
+        return "W";
     }
 }

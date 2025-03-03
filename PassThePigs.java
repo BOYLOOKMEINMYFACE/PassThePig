@@ -6,6 +6,6 @@ public class PassThePigs{
         Scanner sc = new Scanner(System.in);
         Player jacob = new Human("Jacob");
 
-        jacob.roll();
+        ((Human)jacob).roll();
     }
 }
