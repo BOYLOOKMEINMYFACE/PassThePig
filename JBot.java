@@ -1,7 +1,7 @@
 public class Bot extends Player {
     private int score;
     private int handScore;
-    Final int WIN_SCORE = 100;
+    final int WIN_SCORE = 100;
     
     public Bot(String name , String strategy) {
         super(name , strategy);
