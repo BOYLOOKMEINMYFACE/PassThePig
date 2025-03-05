@@ -1,3 +1,4 @@
+// javac PassThePigs.java && java PassThePigs
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -8,14 +9,15 @@ public class PassThePigs {
     static ArrayList<Player> players = new ArrayList<>();
     static ArrayList<Integer> score = new ArrayList<>();
     static int[] handScore;
+    static Scanner sc = new Scanner(System.in);
+    static boolean pigOut = false;
 
     public static void main(String args[]) {
-
-        Scanner sc = new Scanner(System.in);
 
         // initialize players 
         System.out.print("Enter the Number of Bots: ");
         int num = sc.nextInt() + 1;
+        sc.nextLine();
         Player jacob = new Human("Jacob");
         for (int i = 0; i < num; i++) {
             players.add((i == 0) ? jacob : new JBot("Player" + (i + 1), "NO BRAIN"));
@@ -25,14 +27,12 @@ public class PassThePigs {
         handScore = new int[num];
 
         boolean end = false;
-        boolean pigOut = false;
         while (!end) {
             for (int i = 0; i < num; i++) {
-                if (score.get(i) < WIN_SCORE) {
-                    while (!pigOut && score.get(i) < WIN_SCORE && decidesToRoll(i)) {
-                        takeTurn(i);
-                        pigOut = (handScore[i] == 0);
-                    }
+                if (inGame(i) && players.get(i) instanceof JBot) {
+                    botTurn(i);
+                } else if (inGame(i)) {
+                    humanTurn(i);
                 } else {
                     end = true;
                     break;
@@ -43,11 +43,37 @@ public class PassThePigs {
 
     }
 
-    public static boolean decidesToRoll(int i){
+    public static void botTurn(int i) {
+        System.out.print("BOT");
+        while (!pigOut && inGame(i) && decidesToRoll(i)) {
+            rollPig(i);
+            pigOut = (handScore[i] == 0);
+        }
+    }
+
+    public static void humanTurn(int i) {
+        while (!pigOut && inGame(i)) {
+            System.out.print("Do You Want To Roll? (y/n)");
+            String ans = sc.nextLine();
+            if (ans.equals("y")) {
+                System.out.println("Rolled");
+                rollPig(i);
+                pigOut = (handScore[i] == 0);
+            } else {
+                break;
+            }
+        }
+    }
+
+    public static boolean inGame(int i) {
+        return score.get(i) < WIN_SCORE;
+    }
+
+    public static boolean decidesToRoll(int i) {
         return players.get(i).wantsToRoll(score.get(i), handScore[i], score, WIN_SCORE);
     }
 
-    public static void takeTurn(int i) {
+    public static void rollPig(int i) {
         int firstRoll = Pig.roll(), secondRoll = Pig.roll();
         handScore[i] = Pig.calcScore(firstRoll, secondRoll);
         System.out.println(Pig.calcPose(firstRoll, secondRoll));

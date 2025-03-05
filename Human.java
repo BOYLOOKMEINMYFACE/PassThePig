@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 public class Human extends Player {
 
@@ -6,10 +5,5 @@ public class Human extends Player {
         super(name);
         strategy = "HUMAN";
     }
-    
-    public boolean wantsToRoll(int myScore, int handScore, ArrayList<Integer> otherScores, int winningScore) {
-        return true;
-    }
-
 
 }  
