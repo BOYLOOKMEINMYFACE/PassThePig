@@ -15,7 +15,7 @@ public class Pig{
         return output;
     }
 
-    public static int calcScore(int firstRoll , int secondRoll){
+    public static int calcScore(int oriScore , int firstRoll , int secondRoll){
         if (firstRoll + secondRoll == 1) {
             return 0;
         }
@@ -37,7 +37,6 @@ public class Pig{
                 return i;
             }
         }
-        System.out.println(roll);
         return 5;
     }
 

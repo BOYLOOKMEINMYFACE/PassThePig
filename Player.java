@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Player {
 
-    private String name;
+    String name;
     String strategy;
 
     public Player(String name) {
@@ -20,10 +20,6 @@ public class Player {
 
     public String getStrategy() {
         return strategy;
-    }
-
-    public String toString(){
-        return name;
     }
     
 }
