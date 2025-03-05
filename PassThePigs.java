@@ -2,15 +2,16 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class PassThePigs {
+
+    static int WIN_SCORE = 100;
+    static ArrayList<Player> players = new ArrayList<>();
+    static ArrayList<Integer> score = new ArrayList<>();
+    static int[] handScore;
 
     public static void main(String args[]) {
 
-        int WIN_SCORE = 100;
         Scanner sc = new Scanner(System.in);
-        ArrayList<Player> players = new ArrayList<>();
-        ArrayList<Integer> score = new ArrayList<>();
 
         // initialize players 
         System.out.print("Enter the Number of Bots: ");
@@ -21,18 +22,40 @@ public class PassThePigs {
             score.add(0);
         }
 
-        int[] handScore = new int[num];
+        handScore = new int[num];
 
-        for (int i = 0; i < num; i++) {
-            boolean pigOut = false;
-            while (!pigOut && score.get(i) < WIN_SCORE && players.get(i).wantsToRoll(score.get(i), handScore[i], score, WIN_SCORE)) {
-                int firstRoll = Pig.roll();
-                int secondRoll = Pig.roll();
-                System.out.println(Pig.calcPose(firstRoll, secondRoll));
-                handScore[i] = Pig.calcScore(score.get(i), firstRoll, secondRoll);
+        boolean end = false;
+        boolean pigOut = false;
+        while (!end) {
+            for (int i = 0; i < num; i++) {
+                if (score.get(i) < WIN_SCORE) {
+                    while (!pigOut && score.get(i) < WIN_SCORE && decidesToRoll(i)) {
+                        takeTurn(i);
+                        pigOut = (handScore[i] == 0);
+                    }
+                } else {
+                    end = true;
+                    break;
+                }
+                pigOut = false;
             }
         }
 
     }
 
+    public static boolean decidesToRoll(int i){
+        return players.get(i).wantsToRoll(score.get(i), handScore[i], score, WIN_SCORE);
+    }
+
+    public static void takeTurn(int i) {
+        int firstRoll = Pig.roll(), secondRoll = Pig.roll();
+        handScore[i] = Pig.calcScore(firstRoll, secondRoll);
+        System.out.println(Pig.calcPose(firstRoll, secondRoll));
+        if (handScore[i] == 0) {
+            score.set(i, 0);
+        } else {
+            score.set(i, score.get(i) + handScore[i]);
+        }
+        System.out.println(score.get(i));
+    }
 }
